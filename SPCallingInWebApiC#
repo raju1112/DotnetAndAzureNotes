@@ -1,0 +1,67 @@
+Create StoredProcedure sample ::
+CREATE PROCEDURE [dbo].[GetActiveAlarmsByErrorCodeTagName]
+
+    @deviceId BIGINT = NULL,
+    @errorCodes tvp_ListOfInt Readonly,   --- it is to pass list of Integer values to compare ErrorCodes. it is a userdefined dataType of type int.
+    @componentId BIGINT = null,
+	@tagName nvarchar(255)= null
+AS
+ BEGIN
+
+
+ SELECT a.*
+    FROM Alarm.Alarm a
+    JOIN Alarm.ALarmType AT on a.AlarmTypeId = AT.Id  AND AT.Status = 1
+    JOIN Alarm.ErrorCode E on a.ErrorCode = e.Id
+    JOIN @errorCodes ER on e.Id = ER.Id
+    LEFT JOIN Device D on a.DeviceId = D.Id AND D.Status = 1
+    LEFT JOIN TelemetryTag TT on a.TelemetryTagId = TT.Id  AND TT.Status = 1
+    WHERE TT.Name = @tagName AND
+    CASE WHEN @componentId IS NULL then 1 ELSE a.ComponentId END  = CASE WHEN @componentId IS NULL then 1 ELSE @componentId END
+    AND CASE WHEN @deviceId IS NULL then 0 ELSE a.DeviceId END  = CASE WHEN @deviceId IS NULL then 0 ELSE @deviceId END
+    AND a.StatusId = 1 OR (a.StatusId = 2 AND a.ProgressId = 6 )
+
+ END
+=========================================
+calling above SP in SSMS
+
+DECLARE @ErrorCodes tvp_ListOfInt;  -- creating errrorcodes table type of list of int or Userdefined type
+Insert  @ErrorCodes Values(4),(7);  --- inserting to  table values
+ EXEC Alarm.GetActiveAlarmsByErrorCodeTagName  
+    @DeviceId  = 1853,
+    @ErrorCodes = @ErrorCodes,   
+    @ComponentId  = 25944,
+	  @TagName = 'electrode_conductivity'
+==========================================
+calling this SP in Asp.net core WebAPI
+public async Task<List<Alarm>> FindActiveAlarmPacd(string tagName, long? deviceId, List<int> errorCodes, long? componentId)
+        {
+            DataTable errorCodesTable = new DataTable();
+            DataSet ds =new DataSet ();
+            errorCodesTable.Columns.Add(new DataColumn("Id", typeof(int)));
+            errorCodes.ForEach(a =>
+            {
+                DataRow row = errorCodesTable.NewRow();
+                row["Id"] = a;
+                errorCodesTable.Rows.Add(row);
+            });
+            if(componentId == 0)
+            {
+                componentId = null;
+            }
+            SqlParameter tagNameParam= new SqlParameter("@tagName", tagName);
+            SqlParameter deviceIdParam = new SqlParameter("@deviceId", deviceId);
+            SqlParameter errorCodesParam = new SqlParameter("@errorCodes", errorCodesTable) { TypeName = "dbo.tvp_ListOfInt", SqlDbType = SqlDbType.Structured };
+            SqlParameter componentIdParam = new SqlParameter("@componentId", componentId);
+            List<SqlParameter> parameters = new List<SqlParameter> { tagNameParam, deviceIdParam, errorCodesParam, componentIdParam };
+            ds =  await mSqlProcessBr.ExecuteSp(parameters, StoreProcedureConstants.GetActiveAlarmsByErrorCodesTagName);
+            if (ds?.Tables[0]?.Rows?.Count > 0)
+            {
+                List<Alarm> alarms = DatatTableToListConverter.CreateListFromTable<Alarm>(ds?.Tables[0]);
+                return alarms;
+            }
+            else
+            {
+                return null;
+            }
+        }
