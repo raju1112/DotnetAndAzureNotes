@@ -65,3 +65,31 @@ public async Task<List<Alarm>> FindActiveAlarmPacd(string tagName, long? deviceI
                 return null;
             }
         }
+====================================
+--What is Table valued Parameters in SQLSERVER (TVP) :-
+-- Create a user-defined table type for a list of integers
+CREATE TYPE IntListType AS TABLE (
+    Id INT
+);
+-- Create a stored procedure that accepts the IntListType parameter
+CREATE PROCEDURE ProcessIntList
+    @Integers IntListType READONLY
+AS
+BEGIN
+    -- Use the @Integers table variable containing the list of integers
+    SELECT * FROM @Integers;
+    -- Perform other operations using this list of integers
+END;
+--- TO Execute SP with IntListType 
+-- Declare a variable of type IntListType
+DECLARE @IntegerList IntListType;
+-- Insert values into the table variable
+INSERT INTO @IntegerList (Id)
+VALUES (1), (5), (10); -- Add your list of integers here
+
+-- Execute the stored procedure and pass the table variable
+EXEC ProcessIntList @Integers = @IntegerList;
+This approach allows you to pass a list of integers to stored procedures or functions using table-valued parameters (TVPs) 
+
+=========================================
+
