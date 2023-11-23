@@ -1,0 +1,11 @@
+to read file from c#
+using(StreamReader r = new StreamReader(string filepath))
+{
+  message = r.ReadToEnd();
+}
+// if file contains json data 
+//using  Newtonsoft.Json.Linq; for JObject
+JObject messageObject = JObject.Parse(message);
+//from jsonObject we can read a key by below code
+var bodyMessage = messageObject["body"];
+var jToken = bodyMessage["packet"];
