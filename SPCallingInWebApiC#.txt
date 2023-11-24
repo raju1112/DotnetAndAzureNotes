@@ -17,8 +17,11 @@ AS
     LEFT JOIN Device D on a.DeviceId = D.Id AND D.Status = 1
     LEFT JOIN TelemetryTag TT on a.TelemetryTagId = TT.Id  AND TT.Status = 1
     WHERE TT.Name = @tagName AND
-    CASE WHEN @componentId IS NULL then 1 ELSE a.ComponentId END  = CASE WHEN @componentId IS NULL then 1 ELSE @componentId END
-    AND CASE WHEN @deviceId IS NULL then 0 ELSE a.DeviceId END  = CASE WHEN @deviceId IS NULL then 0 ELSE @deviceId END
+    --CASE WHEN @componentId IS NULL then 1 ELSE a.ComponentId END  = CASE WHEN @componentId IS NULL then 1 ELSE @componentId END
+    --AND CASE WHEN @deviceId IS NULL then 0 ELSE a.DeviceId END  = CASE WHEN @deviceId IS NULL then 0 ELSE @deviceId END
+    AND (a.ComponentId = @ComponentId OR @ComponentId IS NULL)
+    AND (a.DeviceId = @DeviceId OR @DeviceId IS NULL)
+    --AND (dc.IsSkid = CASE WHEN @DeviceId IS NOT NULL THEN 1 ELSE 0 END)  -- we can use condition like this to optimize
     AND a.StatusId = 1 OR (a.StatusId = 2 AND a.ProgressId = 6 )
 
  END
