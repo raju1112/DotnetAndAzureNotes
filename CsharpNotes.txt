@@ -1,0 +1,80 @@
+
+1. Value types: They store the actual data, and their instances are stored in the stack memory.
+Examples include int, float, struct, etc.
+Reference types: They store references to the actual data stored on the heap memory.
+Examples include class, interface, delegate, etc. They are allocated on the heap and managed by the garbage collector.
+--------------------------
+2 String: String is an immutable type in C#. Once created, its value cannot be changed.
+Any operation that appears to modify a string actually creates a new string object.
+
+StringBuilder: StringBuilder is mutable and provides methods to modify the string without creating new instances.
+It is more efficient when performing multiple modifications on a string.
+-------------------------
+3 IEnumerable: It is an interface that defines a single method, GetEnumerator(), which returns an IEnumerator. 
+It is used to provide a way to iterate through collections.
+
+IEnumerator: It is an interface that provides methods for iterating through a collection. 
+It contains methods like MoveNext() to move to the next element and Current to retrieve the current element.
+-----------------------
+4 purpose of the using statement in C#:-
+The using statement in C# is primarily used to ensure that the resources like file streams, database connections, etc.,
+are properly disposed of when they are no longer needed. 
+It is used for automatic resource cleanup by calling the Dispose() method of the objects implementing IDisposable.
+
+-----------------------
+5. Type Safety in C# :
+i. Type Inference:
+var number = 10; // Compiler infers 'number' as int
+var text = "Hello"; // Compiler infers 'text' as string
+
+// This line will cause a compilation error because 'number' is of type int, not string
+// var result = number + text; // Error: Operator '+' cannot be applied to operands of type 'int' and 'string'
+
+ii. Strongly Typed Collections:
+List<int> numbers = new List<int>(); // List that stores integers
+numbers.Add(10);
+numbers.Add(20);
+// This line will cause a compilation error because 'numbers' cannot store strings
+// numbers.Add("Thirty"); // Error: The best overloaded method match for 'System.Collections.Generic.List<int>.Add(int)' has some invalid arguments
+
+foreach (int num in numbers)
+{
+    Console.WriteLine(num); // Valid: Iterating through integers
+}
+
+iii. Method Signatures and Parameters:
+// Method that takes an integer and returns a string
+public string ConvertToString(int number)
+{
+    return number.ToString();
+}
+
+// Trying to pass a string to a method that expects an int will cause a compilation error
+// string result = ConvertToString("123"); // Error: Argument 1: cannot convert from 'string' to 'int'
+
+// Using the method with the correct type
+string result = ConvertToString(123); // Valid: Passing an integer
+Console.WriteLine(result); // Output: "123"
+
+iv.Enumerations:
+public enum DaysOfWeek
+{
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
+}
+DaysOfWeek today = DaysOfWeek.Monday;
+
+// This line will cause a compilation error because DaysOfWeek cannot accept a string
+// today = "InvalidDay"; // Error: Cannot implicitly convert type 'string' to 'DaysOfWeek'
+
+if (today == DaysOfWeek.Sunday)
+{
+    Console.WriteLine("Today is Sunday!");
+}
+===================================
+
