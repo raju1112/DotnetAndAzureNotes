@@ -9,3 +9,17 @@ JObject messageObject = JObject.Parse(message);
 //from jsonObject we can read a key by below code
 var bodyMessage = messageObject["body"];
 var jToken = bodyMessage["packet"];
+
+
+//to write text to a file in c#
+using System;
+using System.IO;
+ string filePath = "example.txt"; // Replace with your file path
+ string text = ""Hello world";
+// Create a StreamWriter instance to write to the file
+ using (StreamWriter writer = new StreamWriter(filePath))
+ {
+    // Write the text to the file
+     writer.WriteLine(text);
+ }
+     
