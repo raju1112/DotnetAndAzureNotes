@@ -1,0 +1,112 @@
+Day 1: 
+Abstract Data Types (ADTs) are a fundamental concept in computer science, representing a mathematical model 
+for data types where the data type is defined by its behavior (semantics)
+rather than by its implementation. In C#, ADTs are often realized through classes and interfaces, encapsulating the data and operations on that data.
+
+Here’s a brief overview of some common ADTs and how they can be implemented in C#:
+ 1. Stack : A Stack is a collection that follows the Last-In-First-Out (LIFO) principle.
+			Key Operations:
+                Push: Adds an item to the top of the stack.
+                Pop: Removes and returns the item at the top of the stack.
+                Peek: Returns the item at the top of the stack without removing it.
+                IsEmpty: Checks if the stack is empty.
+     C# provides a built-in Stack<T> class in the System.Collections.Generic namespace.
+		Example : 
+			Stack<int> stack = new Stack<int>();
+			stack.Push(1);
+			stack.Push(2);
+			int top = stack.Peek();  // 2
+			int removed = stack.Pop();  // 2
+
+2. Queue : A Queue is a collection that follows the First-In-First-Out (FIFO) principle.
+
+	Key Operations:
+			Enqueue: Adds an item to the end of the queue.
+			Dequeue: Removes and returns the item at the front of the queue.
+			Peek: Returns the item at the front of the queue without removing it.
+			IsEmpty: Checks if the queue is empty.
+			C# Implementation: C# provides a built-in Queue<T> class in the System.Collections.Generic namespace.
+			
+			Example :
+				Queue<int> queue = new Queue<int>();
+				queue.Enqueue(1);
+				queue.Enqueue(2);
+				int front = queue.Peek();  // 1
+				int removed = queue.Dequeue();  // 1
+
+3. List : 
+A List is a collection that allows for indexed access, dynamic resizing, and sequential access.
+
+	Key Operations:
+			Add: Adds an item to the list.
+			Remove: Removes an item from the list.
+			IndexOf: Returns the index of a specific item.
+			Count: Gets the number of elements in the list.
+			C# Implementation: C# provides a built-in List<T> class in the System.Collections.Generic namespace.
+			
+			Example :
+				List<int> list = new List<int>();
+				list.Add(1);
+				list.Add(2);
+				int index = list.IndexOf(2);  // 1
+				list.Remove(1);
+			
+			
+4. Dictionary : 
+		A Dictionary is a collection of key-value pairs, allowing for fast retrieval based on the key.
+
+		Key Operations:
+				Add: Adds a key-value pair.
+				Remove: Removes a key-value pair by key.
+				TryGetValue: Tries to get a value by key.
+				ContainsKey: Checks if a key exists in the dictionary.
+				C# Implementation: C# provides a built-in Dictionary<TKey, TValue> class in the System.Collections.Generic namespace.
+			
+		Example :			
+			Dictionary<string, int> dictionary = new Dictionary<string, int>();
+			dictionary.Add("one", 1);
+			dictionary.Add("two", 2);
+			int value;
+			if (dictionary.TryGetValue("one", out value))
+			{
+				Console.WriteLine(value);  // 1
+			}
+				
+5. Set : A Set is a collection of unique elements.
+
+	Key Operations:
+		Add: Adds an item to the set if it doesn’t already exist.
+		Remove: Removes an item from the set.
+		Contains: Checks if the set contains a specific item.
+		UnionWith, IntersectWith: Performs set operations like union and intersection.
+		C# Implementation: C# provides a built-in HashSet<T> class in the System.Collections.Generic namespace.
+				
+	Example :
+			HashSet<int> set = new HashSet<int>();
+			set.Add(1);
+			set.Add(2);
+			set.Add(1);  // No effect, 1 is already in the set
+			bool contains = set.Contains(1);  // true
+	
+6. Linked List : 
+A Linked List is a collection of nodes where each node contains a value and a reference to the next node in the sequence.
+
+  Key Operations:
+			AddFirst: Adds a node at the beginning of the list.
+			AddLast: Adds a node at the end of the list.
+			Remove: Removes the first occurrence of a specific value.
+			Find: Finds the first node containing a specific value.
+			C# Implementation: C# provides a built-in LinkedList<T> class in the System.Collections.Generic namespace.	
+	
+	Example :
+			LinkedList<int> linkedList = new LinkedList<int>();
+			linkedList.AddLast(1);
+			linkedList.AddLast(2);
+			linkedList.AddFirst(0);
+			var node = linkedList.Find(1);
+			linkedList.Remove(node);
+These ADTs are the building blocks of many more complex data structures and algorithms in C#. 
+By using these ADTs, 
+you can design efficient and scalable applications that are well-structured and easy to maintain.
+
+--------
